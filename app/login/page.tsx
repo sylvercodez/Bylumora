@@ -22,7 +22,7 @@ export default function LoginPage() {
                 {/* Google Login Button */}
                 <button
                     onClick={handleGoogleLogin}
-                    className="flex items-center justify-center w-full border border-gray-300 rounded-md py-2 mb-4 hover:bg-gray-100 transition"
+                    className="flex items-center justify-center w-full border border-gray-300 rounded-md py-2 mb-4 hover:bg-gray-100 hover:text-black transition"
                 >
                     <Image
                         src="https://www.svgrepo.com/show/355037/google.svg"
