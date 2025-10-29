@@ -28,8 +28,9 @@ export default function WebsitesPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isWorkspaceOpen, setIsWorkspaceOpen] = useState(false);
   const [isAddWebsiteOpen, setIsAddWebsiteOpen] = useState(false);
-  const workspaceRef = useRef(null);
-  const addWebsiteRef = useRef(null);
+ const workspaceRef = useRef<HTMLDivElement | null>(null);
+const addWebsiteRef = useRef<HTMLDivElement | null>(null);
+
 
   const userName = session?.user?.name || "User";
   const userEmail = session?.user?.email || "user@example.com";
@@ -47,18 +48,30 @@ export default function WebsitesPage() {
     if (status === "unauthenticated") router.push("/login");
   }, [status, router]);
 
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (workspaceRef.current && !workspaceRef.current.contains(event.target)) {
-        setIsWorkspaceOpen(false);
-      }
-      if (addWebsiteRef.current && !addWebsiteRef.current.contains(event.target)) {
-        setIsAddWebsiteOpen(false);
-      }
+ useEffect(() => {
+  function handleClickOutside(event: MouseEvent) {
+    if (
+      workspaceRef.current &&
+      !workspaceRef.current.contains(event.target as Node)
+    ) {
+      setIsWorkspaceOpen(false);
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+
+    if (
+      addWebsiteRef.current &&
+      !addWebsiteRef.current.contains(event.target as Node)
+    ) {
+      setIsAddWebsiteOpen(false);
+    }
+  }
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [workspaceRef, addWebsiteRef]);
+
 
   if (status === "loading") {
     return (
