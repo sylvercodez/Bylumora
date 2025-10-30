@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -12,7 +11,6 @@ import {
   Headphones,
   Crown,
   ChevronDown,
-  Menu,
   PanelRightClose,
   PanelLeftClose,
   User,
@@ -25,7 +23,7 @@ import {
   X,
 } from "lucide-react";
 
-// === Pricing Modal ===
+// ==================== Pricing Modal ====================
 function PricingModal({
   open,
   onClose,
@@ -104,8 +102,9 @@ function PricingModal({
           {plans.map((plan, i) => (
             <div
               key={i}
-              className={`border rounded-xl p-6 flex flex-col hover:shadow-lg transition-all duration-200 ${plan.best ? "border-purple-500" : "border-gray-200"
-                }`}
+              className={`border rounded-xl p-6 flex flex-col hover:shadow-lg transition-all duration-200 ${
+                plan.best ? "border-purple-500" : "border-gray-200"
+              }`}
             >
               {plan.best && (
                 <span className="bg-purple-600 text-white px-3 py-1 text-xs font-semibold rounded-full self-start mb-3">
@@ -139,7 +138,7 @@ function PricingModal({
   );
 }
 
-// === Custom Hook for Auth ===
+// ==================== Custom Auth Hook ====================
 function useAuth() {
   const { data: session, status } = useSession();
   const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
@@ -160,41 +159,71 @@ function useAuth() {
     }
   }, [loading, session, firebaseUser, router]);
 
-  return { session, firebaseUser, loading };
+  const unauthenticated = !loading && !session && !firebaseUser;
+
+  return { session, firebaseUser, loading, unauthenticated };
 }
 
-// === WebsitesPage function fixes ===
+// ==================== Main Websites Page ====================
 export default function WebsitesPage() {
-  const { session, firebaseUser, loading } = useAuth();
+  const { session, firebaseUser, loading, unauthenticated } = useAuth();
   const router = useRouter();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isWorkspaceOpen, setIsWorkspaceOpen] = useState(false);
   const [isAddWebsiteOpen, setIsAddWebsiteOpen] = useState(false);
-  const workspaceRef = useRef<HTMLDivElement | null>(null);
-  const addWebsiteRef = useRef<HTMLDivElement | null>(null);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isPricingOpen, setIsPricingOpen] = useState(false);
 
-  if (loading) return <p>Loading...</p>;
+  const workspaceRef = useRef<HTMLDivElement | null>(null);
+  const addWebsiteRef = useRef<HTMLDivElement | null>(null);
+// Close dropdowns on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (workspaceRef.current && !workspaceRef.current.contains(event.target as Node)) {
+        setIsWorkspaceOpen(false);
+      }
+      if (addWebsiteRef.current && !addWebsiteRef.current.contains(event.target as Node)) {
+        setIsAddWebsiteOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  // Fix: define userInitial
-  const userName = session?.user?.name || firebaseUser?.displayName || "User";
-  const userEmail = session?.user?.email || firebaseUser?.email || "user@example.com";
+  if (loading)
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <p className="text-gray-900">Loading...</p>
+      </div>
+    );
+
+ const userName =
+  session?.user?.name ??
+  firebaseUser?.displayName ??
+  firebaseUser?.email?.split("@")[0] ?? // fallback to email prefix
+  "User";
+const userEmail = session?.user?.email ?? firebaseUser?.email ?? "user@example.com";
+
   const userInitial = userName.charAt(0).toUpperCase();
 
-  // Remove duplicate onAuthStateChanged here – already handled in useAuth
+  const addWebsiteItems = [
+    { icon: <Cpu className="w-5 h-5" />, label: "Generate website with AI" },
+    { icon: <FileText className="w-5 h-5" />, label: "Create Blank WordPress website" },
+    { icon: <UploadCloud className="w-5 h-5" />, label: "Import website from backup" },
+    { icon: <ArrowUpCircle className="w-5 h-5" />, label: "Migrate website to 10Web" },
+    { icon: <Settings className="w-5 h-5" />, label: "Optimize existing WordPress website" },
+  ];
 
-  // Your existing addWebsiteItems array and clickOutside handler remain unchanged
-  // ...
-
+  
 
   return (
     <div className="flex min-h-screen bg-white text-gray-900">
       {/* Sidebar */}
       <aside
-        className={`flex flex-col bg-white border-r border-gray-200 transition-all duration-300 ease-in-out ${isSidebarOpen ? "w-64" : "w-20"
-          }`}
+        className={`flex flex-col bg-white border-r border-gray-200 transition-all duration-300 ease-in-out ${
+          isSidebarOpen ? "w-64" : "w-20"
+        }`}
       >
         {/* Logo + Sidebar Toggle */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
@@ -216,7 +245,7 @@ export default function WebsitesPage() {
           </button>
         </div>
 
-        {/* Workspace */}
+        {/* Workspace Dropdown */}
         <div ref={workspaceRef} className="relative p-4 border-b border-gray-200">
           <button
             onClick={() => setIsWorkspaceOpen(!isWorkspaceOpen)}
@@ -232,16 +261,17 @@ export default function WebsitesPage() {
                   <p className="text-xs text-gray-500">Role: owner</p>
                 </div>
                 <ChevronDown
-                  className={`w-4 h-4 text-gray-400 flex-shrink-0 transition-transform ${isWorkspaceOpen ? "rotate-180" : ""
-                    }`}
+                  className={`w-4 h-4 text-gray-400 flex-shrink-0 transition-transform ${
+                    isWorkspaceOpen ? "rotate-180" : ""
+                  }`}
                 />
               </>
             )}
           </button>
 
-          {/* Floating Workspace Dropdown */}
           {isWorkspaceOpen && isSidebarOpen && (
             <div className="absolute top-0 left-full ml-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+              {/* Workspace Content */}
               <div className="p-3 border-b border-gray-100">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center text-white font-semibold flex-shrink-0">
@@ -300,31 +330,28 @@ export default function WebsitesPage() {
 
         {/* Sidebar Navigation */}
         <nav className="flex-1 p-4 overflow-y-auto">
-          {/* Websites Section */}
           {isSidebarOpen && (
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-              Websites
-            </p>
+            <>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                Websites
+              </p>
+              <button className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg text-sm transition-colors">
+                <Cpu className="w-5 h-5 text-gray-900 flex-shrink-0" />
+                <span>All Websites</span>
+              </button>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider my-2">
+                Resources
+              </p>
+              <button className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg text-sm transition-colors">
+                <Book className="w-5 h-5 text-gray-900 flex-shrink-0" />
+                <span>Knowledge Base</span>
+              </button>
+              <button className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg text-sm transition-colors">
+                <Info className="w-5 h-5 text-gray-900 flex-shrink-0" />
+                <span>What's New</span>
+              </button>
+            </>
           )}
-          <button className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg text-sm transition-colors">
-            <Cpu className="w-5 h-5 text-gray-900 flex-shrink-0" />
-            {isSidebarOpen && <span>All Websites</span>}
-          </button>
-
-          {/* Resources Section */}
-          {isSidebarOpen && (
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider my-2">
-              Resources
-            </p>
-          )}
-          <button className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg text-sm transition-colors">
-            <Book className="w-5 h-5 text-gray-900 flex-shrink-0" />
-            {isSidebarOpen && <span>Knowledge Base</span>}
-          </button>
-          <button className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg text-sm transition-colors">
-            <Info className="w-5 h-5 text-gray-900 flex-shrink-0" />
-            {isSidebarOpen && <span>What's New</span>}
-          </button>
         </nav>
 
         {/* Bottom Buttons */}
@@ -345,18 +372,17 @@ export default function WebsitesPage() {
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Websites</h1>
 
-          {/* 🔥 Subscription Toggle */}
           <button
             onClick={() => setIsSubscribed(!isSubscribed)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${isSubscribed
-              ? "bg-green-100 text-green-700 border border-green-300"
-              : "bg-red-100 text-red-700 border border-red-300"
-              }`}
+            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+              isSubscribed
+                ? "bg-green-100 text-green-700 border border-green-300"
+                : "bg-red-100 text-red-700 border border-red-300"
+            }`}
           >
             {isSubscribed ? "Subscribed ✅" : "Unsubscribed 🚫"}
           </button>
 
-          {/* Add Website Dropdown */}
           <div ref={addWebsiteRef} className="relative">
             <button
               onClick={() => setIsAddWebsiteOpen(!isAddWebsiteOpen)}
@@ -373,16 +399,13 @@ export default function WebsitesPage() {
                     key={idx}
                     onClick={() => {
                       setIsAddWebsiteOpen(false);
-
                       if (isSubscribed) {
-                        // only route or run actions if subscribed
                         if (item.label === "Generate website with AI") {
-                          router.push("/website/create-ai"); // ✅ correct path
+                          router.push("/website/create-ai");
                         } else {
                           console.log(`Running action for: ${item.label}`);
                         }
                       } else {
-                        // if not subscribed, show pricing modal instead
                         setIsPricingOpen(true);
                       }
                     }}
@@ -392,7 +415,6 @@ export default function WebsitesPage() {
                     <span>{item.label}</span>
                   </button>
                 ))}
-
               </div>
             )}
           </div>

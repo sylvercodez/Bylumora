@@ -23,7 +23,7 @@ export default function CreateAIWebsitePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4 py-12">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-black px-4 py-12">
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-2xl p-8">
         <h1 className="text-2xl font-bold text-gray-900 text-center mb-4">
           Create Your Website with AI
@@ -41,7 +41,7 @@ export default function CreateAIWebsitePage() {
               required
               value={formData.businessName}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500"
+              className="w-full border border-gray-300 rounded-lg text-black px-4 py-2 focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
@@ -53,7 +53,7 @@ export default function CreateAIWebsitePage() {
               rows={3}
               value={formData.businessDescription}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500"
+              className="w-full border text-black border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
@@ -65,7 +65,7 @@ export default function CreateAIWebsitePage() {
               required
               value={formData.industry}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500"
+              className="w-full border text-black  border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
@@ -77,7 +77,7 @@ export default function CreateAIWebsitePage() {
               required
               value={formData.goal}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500"
+              className="w-full border text-black border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
