@@ -22,6 +22,7 @@ import {
   Settings,
   X,
 } from "lucide-react";
+import Sidebar from "../components/Sidebar";
 
 // ==================== Pricing Modal ====================
 function PricingModal({
@@ -177,6 +178,8 @@ export default function WebsitesPage() {
 
   const workspaceRef = useRef<HTMLDivElement | null>(null);
   const addWebsiteRef = useRef<HTMLDivElement | null>(null);
+
+  
 // Close dropdowns on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -215,157 +218,16 @@ const userEmail = session?.user?.email ?? firebaseUser?.email ?? "user@example.c
     { icon: <Settings className="w-5 h-5" />, label: "Optimize existing WordPress website" },
   ];
 
-  
+   const goToSubscription = () => {
+    router.push("/subscription"); // replace with your subscription page route
+  };
+
 
   return (
     <div className="flex min-h-screen bg-white text-gray-900">
+           <Sidebar />
       {/* Sidebar */}
-      <aside
-        className={`flex flex-col bg-white border-r border-gray-200 transition-all duration-300 ease-in-out ${
-          isSidebarOpen ? "w-64" : "w-20"
-        }`}
-      >
-        {/* Logo + Sidebar Toggle */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">10</span>
-            </div>
-            {isSidebarOpen && <span className="font-semibold text-gray-900">Bylumora</span>}
-          </div>
-          <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-1 rounded hover:bg-gray-100"
-          >
-            {isSidebarOpen ? (
-              <PanelRightClose className="w-5 h-5 text-gray-900" />
-            ) : (
-              <PanelLeftClose className="w-5 h-5 text-gray-900" />
-            )}
-          </button>
-        </div>
-
-        {/* Workspace Dropdown */}
-        <div ref={workspaceRef} className="relative p-4 border-b border-gray-200">
-          <button
-            onClick={() => setIsWorkspaceOpen(!isWorkspaceOpen)}
-            className="w-full flex items-center gap-3 hover:bg-gray-50 p-2 rounded-lg transition-colors"
-          >
-            <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center text-white font-semibold flex-shrink-0">
-              {userInitial}
-            </div>
-            {isSidebarOpen && (
-              <>
-                <div className="flex-1 text-left min-w-0">
-                  <p className="font-medium text-sm truncate">{userName}’s workspace</p>
-                  <p className="text-xs text-gray-500">Role: owner</p>
-                </div>
-                <ChevronDown
-                  className={`w-4 h-4 text-gray-400 flex-shrink-0 transition-transform ${
-                    isWorkspaceOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </>
-            )}
-          </button>
-
-          {isWorkspaceOpen && isSidebarOpen && (
-            <div className="absolute top-0 left-full ml-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-              {/* Workspace Content */}
-              <div className="p-3 border-b border-gray-100">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center text-white font-semibold flex-shrink-0">
-                    {userInitial}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="font-medium text-sm truncate">{userName}’s workspace</p>
-                    <p className="text-xs text-gray-500">Role: owner</p>
-                  </div>
-                </div>
-                <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-md">
-                  <Diamond className="w-4 h-4" />
-                  Upgrade plan
-                </button>
-              </div>
-              <div className="p-2">
-                <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 rounded-md">
-                  Subscription & billing
-                </button>
-                <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 rounded-md">
-                  Workspace settings
-                </button>
-                <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 rounded-md">
-                  Activity log
-                </button>
-                <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 rounded-md">
-                  White label
-                </button>
-              </div>
-              <div className="p-3 border-t border-gray-100">
-                <p className="text-xs text-gray-500 mb-2">Account</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 min-w-0 flex-1">
-                    <User className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium truncate">{userName}</p>
-                      <p className="text-xs text-gray-500 truncate">{userEmail}</p>
-                    </div>
-                  </div>
-                  <button className="text-sm text-blue-600 hover:text-blue-700 flex-shrink-0 ml-2">
-                    Manage
-                  </button>
-                </div>
-              </div>
-              <div className="p-2 border-t border-gray-100">
-                <button
-                  onClick={() => signOut({ callbackUrl: "/login" })}
-                  className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md"
-                >
-                  Sign out
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Sidebar Navigation */}
-        <nav className="flex-1 p-4 overflow-y-auto">
-          {isSidebarOpen && (
-            <>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                Websites
-              </p>
-              <button className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg text-sm transition-colors">
-                <Cpu className="w-5 h-5 text-gray-900 flex-shrink-0" />
-                <span>All Websites</span>
-              </button>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider my-2">
-                Resources
-              </p>
-              <button className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg text-sm transition-colors">
-                <Book className="w-5 h-5 text-gray-900 flex-shrink-0" />
-                <span>Knowledge Base</span>
-              </button>
-              <button className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg text-sm transition-colors">
-                <Info className="w-5 h-5 text-gray-900 flex-shrink-0" />
-                <span>What's New</span>
-              </button>
-            </>
-          )}
-        </nav>
-
-        {/* Bottom Buttons */}
-        <div className="p-4 border-t border-gray-200 mt-auto flex flex-col gap-2">
-          <button className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
-            <Headphones className="w-4 h-4 flex-shrink-0" />
-            {isSidebarOpen && <span>Talk to sales</span>}
-          </button>
-          <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
-            <Crown className="w-4 h-4 flex-shrink-0" />
-            {isSidebarOpen && <span>Get 10Web Pro for 7 days</span>}
-          </button>
-        </div>
-      </aside>
+      
 
       {/* Main Section */}
       <main className="flex-1 flex flex-col p-4">
