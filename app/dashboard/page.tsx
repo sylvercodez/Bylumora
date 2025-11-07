@@ -10,19 +10,21 @@ export default function DashboardPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [showOnboarding, setShowOnboarding] = useState(false);
-  const [firebaseUser, setFirebaseUser] = useState<any>(null);
+  const [firebaseUser, setFirebaseUser] = useState<any>(undefined); // undefined = not yet checked
 
-  // Listen for Firebase auth changes
+  // ✅ Listen for Firebase auth changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
-      setFirebaseUser(user);
+      setFirebaseUser(user || null);
     });
     return () => unsubscribe();
   }, []);
 
-  // Check authentication and onboarding
+  // ✅ Check authentication and onboarding
   useEffect(() => {
-    if (status === "loading") return; // wait for NextAuth
+    // Wait until both NextAuth & Firebase are resolved
+    if (status === "loading" || firebaseUser === undefined) return;
+
     const isAuthenticated = status === "authenticated" || firebaseUser;
 
     if (!isAuthenticated) {
@@ -30,11 +32,15 @@ export default function DashboardPage() {
       return;
     }
 
+    // Check local onboarding flag
     const hasSeenOnboarding = localStorage.getItem("hasSeenOnboarding");
+
     if (!hasSeenOnboarding) {
-      setShowOnboarding(true); // show onboarding for first-time users
+      // Show onboarding for first-time users
+      requestAnimationFrame(() => setShowOnboarding(true));
     } else {
-      router.push("/website"); // redirect returning users
+      // Skip onboarding for returning users
+      router.push("/website");
     }
   }, [status, firebaseUser, router]);
 
@@ -43,9 +49,12 @@ export default function DashboardPage() {
     router.push("/website");
   };
 
-  if (status === "loading" && !firebaseUser)
-    return <p className="text-center mt-10 text-white">Loading...</p>;
+  // ✅ Loading state
+  if ((status === "loading" && firebaseUser === undefined) || firebaseUser === undefined) {
+    return <div className="flex flex-row item-center justify-center text-center mt-10 text-white"><div className="text-center mt-10 text-white">  <div className="h-20 w-20 rounded-full border-4 border-gray-200 border-t-purple-600 animate-spin mb-6" />Loading...</div> </div>;
+  }
 
+  // ✅ Onboarding screen
   if (showOnboarding) {
     const displayName = session?.user?.name || firebaseUser?.displayName || "User";
 

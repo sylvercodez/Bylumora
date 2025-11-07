@@ -43,7 +43,7 @@ export default function CreatingPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-center px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center  text-center px-4">
       <div className="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full">
         <div className="flex flex-col items-center">
           <div className="h-20 w-20 rounded-full border-4 border-gray-200 border-t-purple-600 animate-spin mb-6" />

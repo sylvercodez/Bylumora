@@ -83,7 +83,9 @@ export default function CreateAIWebsitePage() {
 
           <button
             type="submit"
-            className="w-full bg-purple-600 text-white font-semibold py-3 rounded-lg hover:bg-purple-700 transition"
+             className="flex items-center justify-center w-full py-2 mb-4 rounded-full border border-yellow-500 text-yellow-400 font-semibold bg-black backdrop-blur-md hover:bg-gray-500 hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(255,215,0,0.4)]"
+         
+            // className="w-full bg-purple-600 text-white font-semibold py-3 rounded-lg hover:bg-purple-700 transition"
           >
             Generate Website
           </button>

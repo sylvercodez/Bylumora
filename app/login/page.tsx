@@ -51,25 +51,26 @@ export default function LoginPage() {
         <h1 className="text-2xl font-bold text-center mb-6 text-white">Login to 10Web</h1>
 
         {/* OAuth buttons */}
-        <button
-          onClick={() => handleOAuthLogin("google")}
-          disabled={loading}
-          className="flex items-center justify-center w-full border border-gray-300 rounded-md py-2 mb-4 hover:bg-gray-100 hover:text-black transition disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <Image
-            src="https://www.svgrepo.com/show/355037/google.svg"
-            alt="Google"
-            width={20}
-            height={20}
-            className="mr-2"
-          />
-          Continue with Google
-        </button>
+       
+<button
+  onClick={() => handleOAuthLogin("google")}
+  disabled={loading}
+  className="flex items-center justify-center w-full py-2 mb-4 rounded-full border border-yellow-500 text-yellow-400 font-semibold bg-yellow-500/10 backdrop-blur-md hover:bg-yellow-500/20 hover:text-yellow-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(255,215,0,0.4)]"
+>
+  <Image
+    src="https://www.svgrepo.com/show/355037/google.svg"
+    alt="Google"
+    width={20}
+    height={20}
+    className="mr-2"
+  />
+  Continue with Google
+</button>
 
         <button
           onClick={() => handleOAuthLogin("github")}
           disabled={loading}
-          className="flex items-center justify-center w-full border border-gray-300 rounded-md py-2 mb-4 hover:bg-gray-100 hover:text-black transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center justify-center w-full py-2 mb-4 rounded-full border border-yellow-500 text-yellow-400 font-semibold bg-yellow-500/10 backdrop-blur-md hover:bg-yellow-500/20 hover:text-yellow-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(255,215,0,0.4)]"
         >
           <Image
             src="https://www.svgrepo.com/show/217753/github.svg"
@@ -120,7 +121,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-yellow-400 text-black font-medium py-2 rounded-md hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center justify-center w-full py-2 mb-4 rounded-full border border-yellow-500 text-yellow-400 font-semibold bg-yellow-500/10 backdrop-blur-md hover:bg-yellow-500/20 hover:text-yellow-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(255,215,0,0.4)]"
           >
             {loading ? "Logging in..." : "Login"}
           </button>

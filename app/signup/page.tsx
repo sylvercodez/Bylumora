@@ -88,7 +88,7 @@ export default function SignupPage() {
         {/* OAuth Buttons */}
         <button
           onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-          className="flex items-center justify-center w-full border border-gray-300 rounded-md py-2 mb-4 hover:bg-gray-100 hover:text-black transition"
+         className="flex items-center justify-center w-full py-2 mb-4 rounded-full border border-yellow-500 text-yellow-400 font-semibold bg-yellow-500/10 backdrop-blur-md hover:bg-yellow-500/20 hover:text-yellow-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(255,215,0,0.4)]"
         >
           <Image
             src="https://www.svgrepo.com/show/355037/google.svg"
@@ -102,7 +102,7 @@ export default function SignupPage() {
 
         <button
           onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
-          className="flex items-center justify-center w-full border border-gray-300 rounded-md py-2 mb-4 hover:bg-gray-100 hover:text-black transition"
+           className="flex items-center justify-center w-full py-2 mb-4 rounded-full border border-yellow-500 text-yellow-400 font-semibold bg-yellow-500/10 backdrop-blur-md hover:bg-yellow-500/20 hover:text-yellow-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(255,215,0,0.4)]"
         >
           <Image
             src="https://www.svgrepo.com/show/217753/github.svg"
@@ -157,7 +157,8 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full bg-yellow-400 text-black py-3 rounded-md hover:bg-yellow-600 transition ${
+            
+            className={`flex items-center justify-center w-full py-2 mb-4 rounded-full border border-yellow-500 text-yellow-400 font-semibold bg-yellow-500/10 backdrop-blur-md hover:bg-yellow-500/20 hover:text-yellow-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(255,215,0,0.4)]${
               loading ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >

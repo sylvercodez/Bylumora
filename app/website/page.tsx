@@ -1,20 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import {
-  Book,
-  Info,
-  Headphones,
-  Crown,
   ChevronDown,
-  PanelRightClose,
-  PanelLeftClose,
-  User,
-  Diamond,
   Cpu,
   FileText,
   UploadCloud,
@@ -79,19 +71,19 @@ function PricingModal({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-6xl rounded-2xl shadow-2xl relative overflow-hidden">
+    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-lg flex items-center justify-center p-4">
+      <div className="w-full max-w-6xl rounded-2xl shadow-2xl relative overflow-hidden">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full"
+          className="absolute top-4 bg-white right-4 p-2 hover:bg-white rounded-full"
         >
           <X className="w-5 h-5 text-gray-700" />
         </button>
 
         <div className="p-8 border-b border-gray-200 text-center">
-          <h2 className="text-2xl font-bold text-gray-900">
+          <h2 className="text-2xl font-bold text-white">
             Get 7 days of{" "}
-            <span className="text-purple-600">10Web Pro Plans</span> and a
+            <span className="text-yellow-600">10Web Pro Plans</span> and a
             custom domain for Free
           </h2>
           <p className="text-gray-500 mt-1">
@@ -104,30 +96,32 @@ function PricingModal({
             <div
               key={i}
               className={`border rounded-xl p-6 flex flex-col hover:shadow-lg transition-all duration-200 ${
-                plan.best ? "border-purple-500" : "border-gray-200"
+                plan.best ? "border-yellow-500" : "border-gray-200"
               }`}
             >
               {plan.best && (
-                <span className="bg-purple-600 text-white px-3 py-1 text-xs font-semibold rounded-full self-start mb-3">
+                <span className="bg-yellow-600 text-white px-3 py-1 text-xs font-semibold rounded-full self-start mb-3">
                   BEST VALUE
                 </span>
               )}
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="text-lg font-semibold text-white mb-2">
                 {plan.title}
               </h3>
               <div className="flex items-end gap-1 mb-4">
-                <span className="text-3xl font-bold text-gray-900">
+                <span className="text-3xl font-bold text-yellow-500">
                   {plan.price}
                 </span>
-                <span className="text-gray-500">{plan.per}</span>
+                <span className="text-white">{plan.per}</span>
               </div>
-              <button className="bg-black text-white w-full py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition">
+              <button
+                className="flex items-center justify-center w-full py-2 mb-4 rounded-lg border border-yellow-500 text-yellow-400 font-semibold bg-yellow-500/10 backdrop-blur-md hover:bg-yellow-500/20 hover:text-yellow-300 transition-all duration-300"
+              >
                 Try for Free
               </button>
-              <ul className="mt-5 space-y-2 text-sm text-gray-600 flex-1">
+              <ul className="mt-5 space-y-2 text-sm text-white flex-1">
                 {plan.details.map((d, idx) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <span className="text-purple-600">✓</span> {d}
+                    <span className="text-yellow-600">✓</span> {d}
                   </li>
                 ))}
               </ul>
@@ -141,7 +135,7 @@ function PricingModal({
 
 // ==================== Custom Auth Hook ====================
 function useAuth() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -161,32 +155,40 @@ function useAuth() {
   }, [loading, session, firebaseUser, router]);
 
   const unauthenticated = !loading && !session && !firebaseUser;
-
   return { session, firebaseUser, loading, unauthenticated };
 }
 
 // ==================== Main Websites Page ====================
 export default function WebsitesPage() {
-  const { session, firebaseUser, loading, unauthenticated } = useAuth();
+  const { session, firebaseUser, loading } = useAuth();
   const router = useRouter();
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isWorkspaceOpen, setIsWorkspaceOpen] = useState(false);
   const [isAddWebsiteOpen, setIsAddWebsiteOpen] = useState(false);
-  const [isSubscribed, setIsSubscribed] = useState(false);
+  // const [isSubscribed, setIsSubscribed] = useState(false);
   const [isPricingOpen, setIsPricingOpen] = useState(false);
-
-  const workspaceRef = useRef<HTMLDivElement | null>(null);
   const addWebsiteRef = useRef<HTMLDivElement | null>(null);
 
-  
-// Close dropdowns on outside click
+ // ✅ Initialize subscription state safely without triggering a warning
+const [isSubscribed, setIsSubscribed] = useState<boolean>(() => {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("isSubscribed") === "false";
+  }
+  return false;
+});
+
+
+  // ✅ Save subscription state to localStorage
+  useEffect(() => {
+    localStorage.setItem("isSubscribed", isSubscribed.toString());
+  }, [isSubscribed]);
+
+  // Close dropdowns on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (workspaceRef.current && !workspaceRef.current.contains(event.target as Node)) {
-        setIsWorkspaceOpen(false);
-      }
-      if (addWebsiteRef.current && !addWebsiteRef.current.contains(event.target as Node)) {
+      if (
+        addWebsiteRef.current &&
+        !addWebsiteRef.current.contains(event.target as Node)
+      ) {
         setIsAddWebsiteOpen(false);
       }
     }
@@ -201,15 +203,6 @@ export default function WebsitesPage() {
       </div>
     );
 
- const userName =
-  session?.user?.name ??
-  firebaseUser?.displayName ??
-  firebaseUser?.email?.split("@")[0] ?? // fallback to email prefix
-  "User";
-const userEmail = session?.user?.email ?? firebaseUser?.email ?? "user@example.com";
-
-  const userInitial = userName.charAt(0).toUpperCase();
-
   const addWebsiteItems = [
     { icon: <Cpu className="w-5 h-5" />, label: "Generate website with AI" },
     { icon: <FileText className="w-5 h-5" />, label: "Create Blank WordPress website" },
@@ -218,28 +211,21 @@ const userEmail = session?.user?.email ?? firebaseUser?.email ?? "user@example.c
     { icon: <Settings className="w-5 h-5" />, label: "Optimize existing WordPress website" },
   ];
 
-   const goToSubscription = () => {
-    router.push("/subscription"); // replace with your subscription page route
-  };
-
-
   return (
-    <div className="flex min-h-screen bg-white text-gray-900">
-           <Sidebar />
-      {/* Sidebar */}
-      
+    <div className="flex min-h-screen text-gray-900">
+      <Sidebar />
 
-      {/* Main Section */}
       <main className="flex-1 flex flex-col p-4">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Websites</h1>
+          <h1 className="text-2xl font-bold text-yellow-500">Websites</h1>
 
+          {/* ✅ Subscription Toggle */}
           <button
-            onClick={() => setIsSubscribed(!isSubscribed)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+            onClick={() => setIsSubscribed((prev) => !prev)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
               isSubscribed
-                ? "bg-green-100 text-green-700 border border-green-300"
-                : "bg-red-100 text-red-700 border border-red-300"
+                ? "bg-green-100 text-green-700 border border-green-300 hover:bg-green-200"
+                : "bg-red-100 text-red-700 border border-red-300 hover:bg-red-200"
             }`}
           >
             {isSubscribed ? "Subscribed ✅" : "Unsubscribed 🚫"}
@@ -248,7 +234,7 @@ const userEmail = session?.user?.email ?? firebaseUser?.email ?? "user@example.c
           <div ref={addWebsiteRef} className="relative">
             <button
               onClick={() => setIsAddWebsiteOpen(!isAddWebsiteOpen)}
-              className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg text-sm font-medium hover:bg-gray-800"
+              className="flex items-center justify-center w-full px-4 py-2 rounded-full border border-yellow-500 text-yellow-400 font-semibold bg-yellow-500/10 backdrop-blur-md hover:bg-yellow-500/20 hover:text-yellow-300 transition-all duration-300 shadow-[0_0_15px_rgba(255,215,0,0.4)]"
             >
               Add Website
               <ChevronDown className="w-4 h-4" />
@@ -283,14 +269,16 @@ const userEmail = session?.user?.email ?? firebaseUser?.email ?? "user@example.c
         </div>
 
         <div className="flex-1 flex items-center justify-center">
-          <p className="text-gray-900">
+          <p className="text-white">
             No websites yet. Get started by adding one!
           </p>
         </div>
       </main>
 
-      {/* Pricing Modal */}
-      <PricingModal open={isPricingOpen} onClose={() => setIsPricingOpen(false)} />
+      <PricingModal
+        open={isPricingOpen}
+        onClose={() => setIsPricingOpen(false)}
+      />
     </div>
   );
 }

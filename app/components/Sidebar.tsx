@@ -87,16 +87,16 @@ function PricingModal({
           onClick={onClose}
           className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full"
         >
-          <X className="w-5 h-5 text-gray-700" />
+          <X className="w-5 h-5 text-white-700" />
         </button>
 
         <div className="p-8 border-b border-gray-200 text-center">
-          <h2 className="text-2xl font-bold text-gray-900">
+          <h2 className="text-2xl font-bold text-white-900">
             Get 7 days of{" "}
             <span className="text-purple-600">10Web Pro Plans</span> and a
             custom domain for Free
           </h2>
-          <p className="text-gray-500 mt-1">
+          <p className="text-white mt-1">
             Choose your plan and unlock premium features
           </p>
         </div>
@@ -114,19 +114,19 @@ function PricingModal({
                   BEST VALUE
                 </span>
               )}
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="text-lg font-semibold text-whitemb-2">
                 {plan.title}
               </h3>
               <div className="flex items-end gap-1 mb-4">
-                <span className="text-3xl font-bold text-gray-900">
+                <span className="text-3xl font-bold text-white-900">
                   {plan.price}
                 </span>
-                <span className="text-gray-500">{plan.per}</span>
+                <span className="text-white">{plan.per}</span>
               </div>
               <button className="bg-black text-white w-full py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition">
                 Try for Free
               </button>
-              <ul className="mt-5 space-y-2 text-sm text-gray-600 flex-1">
+              <ul className="mt-5 space-y-2 text-sm text-white-600 flex-1">
                 {plan.details.map((d, idx) => (
                   <li key={idx} className="flex items-start gap-2">
                     <span className="text-purple-600">✓</span> {d}
@@ -199,34 +199,34 @@ export default function Sidebar() {
   if (loading)
     return (
       <div className="flex items-center justify-center w-64 h-screen bg-white border-r border-gray-200">
-        <p className="text-gray-900">Loading...</p>
+        <p className="text-white-900">Loading...</p>
       </div>
     );
 
   return (
     <>
       <aside
-        className={`flex flex-col bg-white border-r border-gray-200 transition-all duration-300 ease-in-out ${
+        className={`flex flex-col  border-r border-gray-200 transition-all duration-300 ease-in-out ${
           isSidebarOpen ? "w-64" : "w-20"
         }`}
       >
         {/* Logo + Toggle */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-pink-500 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">10</span>
             </div>
-            {isSidebarOpen && <span className="font-semibold text-gray-900">Bylumora</span>}
+            {isSidebarOpen && <span className="font-semibold text-white">Bylumora</span>}
           </div>
           <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             className="p-1 rounded hover:bg-gray-100"
           >
-            {isSidebarOpen ? (
-              <PanelRightClose className="w-5 h-5 text-gray-900" />
-            ) : (
-              <PanelLeftClose className="w-5 h-5 text-gray-900" />
-            )}
+           {isSidebarOpen ? (
+    <PanelRightClose className="w-5 h-5 text-white" />
+  ) : (
+    <PanelLeftClose className="w-5 h-5 text-white" />
+  )}
           </button>
         </div>
 
@@ -234,19 +234,19 @@ export default function Sidebar() {
         <div ref={workspaceRef} className="relative p-4 border-b border-gray-200">
           <button
             onClick={() => setIsWorkspaceOpen(!isWorkspaceOpen)}
-            className="w-full flex items-center gap-3 hover:bg-gray-50 p-2 rounded-lg transition-colors"
+            className="w-full flex items-center rounded-full border border-yellow-500 gap-3 bg-yellow-500/10 backdrop-blur-md hover:bg-yellow-500/20 border-white p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(255,215,0,0.4)]"
           >
-            <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center text-white font-semibold flex-shrink-0">
+            <div className="w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center text-white font-semibold flex-shrink-0">
               {userInitial}
             </div>
             {isSidebarOpen && (
               <>
                 <div className="flex-1 text-left min-w-0">
-                  <p className="font-medium text-sm truncate">{userName}’s workspace</p>
-                  <p className="text-xs text-gray-500">Role: owner</p>
+                  <p className="font-medium text-sm truncate text-white ">{userName}’s workspace</p>
+                  <p className="text-xs text-white ">Role: owner</p>
                 </div>
                 <ChevronDown
-                  className={`w-4 h-4 text-gray-400 flex-shrink-0 transition-transform ${
+                  className={`w-4 h-4 text-white flex-shrink-0 transition-transform  ${
                     isWorkspaceOpen ? "rotate-180" : ""
                   }`}
                 />
@@ -263,39 +263,39 @@ export default function Sidebar() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="font-medium text-sm truncate">{userName}’s workspace</p>
-                    <p className="text-xs text-gray-500">Role: owner</p>
+                    <p className="text-xs text-white">Role: owner</p>
                   </div>
                 </div>
-                <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-md">
+                <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-yellow-600 hover:bg-yellow-50 rounded-md">
                   <Diamond className="w-4 h-4" />
                   Upgrade plan
                 </button>
               </div>
               <div className="p-2">
-                <button onClick={goToSubscription} className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 rounded-md">
+                <button onClick={goToSubscription} className="w-full text-left px-3 py-2 text-sm hover:bg-yellow-50 rounded-md">
                   Subscription & billing
                 </button>
-                <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 rounded-md">
+                <button className="w-full text-left px-3 py-2 text-sm hover:bg-yellow-50 rounded-md">
                   Workspace settings
                 </button>
-                <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 rounded-md">
+                <button className="w-full text-left px-3 py-2 text-sm hover:bg-yellow-50 rounded-md">
                   Activity log
                 </button>
-                <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 rounded-md">
+                <button className="w-full text-left px-3 py-2 text-sm hover:bg-yellow-50 rounded-md">
                   White label
                 </button>
               </div>
               <div className="p-3 border-t border-gray-100">
-                <p className="text-xs text-gray-500 mb-2">Account</p>
+                <p className="text-xs text-white mb-2">Account</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 min-w-0 flex-1">
-                    <User className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                    <User className="w-4 h-4 text-white-400 flex-shrink-0" />
                     <div className="min-w-0">
                       <p className="text-sm font-medium truncate">{userName}</p>
-                      <p className="text-xs text-gray-500 truncate">{userEmail}</p>
+                      <p className="text-xs text-white truncate">{userEmail}</p>
                     </div>
                   </div>
-                  <button className="text-sm text-blue-600 hover:text-blue-700 flex-shrink-0 ml-2">
+                  <button className="text-sm text-yellow-600 hover:text-yellow-700 flex-shrink-0 ml-2">
                     Manage
                   </button>
                 </div>
@@ -316,32 +316,32 @@ export default function Sidebar() {
         <nav className="flex-1 p-4 overflow-y-auto">
           {isSidebarOpen && (
             <>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+              <p className="text-xs font-semibold text-white uppercase tracking-wider mb-2">
                 Websites
               </p>
               <button
                 onClick={() => router.push("/website")}
-                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg text-sm transition-colors"
+                className="w-full flex text-white items-center gap-3 px-3 py-2 hover:bg-yellow-500 rounded-lg text-sm transition-colors"
               >
-                <Cpu className="w-5 h-5 text-gray-900 flex-shrink-0" />
+                <Cpu className="w-5 h-5 text-white flex-shrink-0" />
                 <span>All Websites</span>
               </button>
 
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider my-2">
+              <p className="text-xs font-semibold text-white uppercase tracking-wider my-2 ">
                 Resources
               </p>
                <UsageSummaryPopup>
-        <button  className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg text-sm transition-colors">
-          <Book className="w-5 h-5 text-gray-900 flex-shrink-0" />
+        <button  className="w-full flex text-white items-center gap-3 px-3 py-2 hover:bg-yellow-500 rounded-lg text-sm transition-colors">
+          <Book className="w-5 h-5 text-white flex-shrink-0" />
           <span>Usage Summary</span>
         </button>
       </UsageSummaryPopup>
-               <button className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg text-sm transition-colors">
-                <Book className="w-5 h-5 text-gray-900 flex-shrink-0" />
+               <button className="w-full flex text-white items-center gap-3 px-3 py-2 hover:bg-yellow-500 rounded-lg text-sm transition-colors">
+                <Book className="w-5 h-5 text-white flex-shrink-0" />
                 <span>Knowledge Base</span>
               </button>
-              <button className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg text-sm transition-colors">
-                <Info className="w-5 h-5 text-gray-900 flex-shrink-0" />
+              <button className="w-full flex text-white items-center gap-3 px-3 py-2 hover:bg-yellow-500 rounded-lg text-sm transition-colors">
+                <Info className="w-5 h-5 text-white flex-shrink-0" />
                 <span>What's New</span>
               </button>
             </>
@@ -352,7 +352,7 @@ export default function Sidebar() {
         <div className="p-4 border-t border-gray-200 mt-auto flex flex-col gap-2">
           <TalkToSalesModal
         trigger={
-          <button className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
+          <button className="w-full flex items-center justify-center gap-2 px-4 py-2 border text-white border-gray-300 rounded-lg text-sm font-medium transition-colors">
             <Headphones className="w-4 h-4 flex-shrink-0" />
             {isSidebarOpen && <span>Talk to sales</span>}
           </button>
@@ -361,10 +361,10 @@ export default function Sidebar() {
           
           <button
             onClick={() => setIsPricingOpen(true)}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+            className="flex items-center justify-center w-full py-2 rounded-lg border border-yellow-500 text-yellow-400 font-semibold bg-yellow-500/10 text-sm font-medium backdrop-blur-md hover:bg-yellow-500/20 hover:text-yellow-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(255,215,0,0.4)]"
           >
-            <Crown className="w-4 h-4 flex-shrink-0" />
-            {isSidebarOpen && <span>Get 10Web Pro for 7 days</span>}
+            <Crown className="w-4 h-4 flex-shrink-0 mr-4" />
+            {isSidebarOpen && <span className="text-sm font-medium ">Get 10Web Pro for 7 days</span>}
           </button>
         </div>
       </aside>
