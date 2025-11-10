@@ -12,7 +12,7 @@ export default function CreatingPage() {
     async function createWebsite() {
       try {
         // ----- MOCK API -----
-        // simulate work: replace with real fetch to 10Web when you have the key
+        // simulate work: replace with real fetch to Lumora when you have the key
         await new Promise((res) => setTimeout(res, 2500)); // 2.5s demo delay
 
         // simulate receiving created site metadata (id, url, title)

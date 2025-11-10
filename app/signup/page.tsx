@@ -51,7 +51,7 @@ export default function SignupPage() {
       {/* Left Side */}
       <div className="hidden md:flex w-1/2 bg-gray-100 p-12 flex-col justify-center">
         <h1 className="text-4xl font-bold mb-6 text-black">
-          Build and host websites <br /> with 10Web AI Builder
+          Build and host websites <br /> with Lumora AI Builder
         </h1>
         <p className="text-lg mb-4 text-gray-900">
           Build and host a website 10x faster with AI
@@ -64,7 +64,7 @@ export default function SignupPage() {
         <div className="space-y-6">
           <div>
             <p className="italic text-gray-700">
-              "10Web AI Website Builder has revolutionized the way I build websites
+              "Lumora AI Website Builder has revolutionized the way I build websites
               for my clients. The AI technology simplifies the entire process, allowing
               me to create stunning, custom websites in just minutes."
             </p>
@@ -73,7 +73,7 @@ export default function SignupPage() {
           <div>
             <p className="italic text-gray-700">
               "Great WordPress hosting company! Tested many WordPress hosting services
-              & this is by far the best one we’ve used so far. Best part about 10Web
+              & this is by far the best one we’ve used so far. Best part about Lumora
               is the great customer support. Keep up the good work!"
             </p>
             <p className="font-bold mt-2 text-gray-400">- Jon Ruigrok</p>
@@ -167,7 +167,7 @@ export default function SignupPage() {
         </form>
 
         <p className="text-xs text-gray-500 mt-4">
-          By signing up, you agree to 10Web’s{" "}
+          By signing up, you agree to Lumora’s{" "}
           <a href="#" className="underline text-yellow-500">Terms of Service</a> and{" "}
           <a href="#" className="underline text-yellow-500">Privacy Policy</a>.
         </p>

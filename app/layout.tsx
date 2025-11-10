@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper"; // client-safe import
 
 export const metadata: Metadata = {
-  title: "10Web Auth App",
+  title: "Lumora Auth App",
   description: "Login with Google using NextAuth.js",
 };
 

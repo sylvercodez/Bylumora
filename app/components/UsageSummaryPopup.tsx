@@ -1,11 +1,10 @@
-// components/UsageSummaryPopup.tsx
 "use client";
 
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useEffect } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 interface UsageSummaryPopupProps {
-  children: ReactNode; // Custom trigger button
+  children: ReactNode;
 }
 
 const data = [
@@ -13,11 +12,20 @@ const data = [
   { name: "Free Storage", value: 70 - 11.41 },
 ];
 
-const COLORS = ["#4F46E5", "#E5E7EB"]; // Indigo & gray
+const COLORS = ["#4F46E5", "#E5E7EB"];
 
 const UsageSummaryPopup: React.FC<UsageSummaryPopupProps> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const togglePopup = () => setIsOpen(!isOpen);
+
+  // Prevent background scroll when popup is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [isOpen]);
 
   return (
     <>
@@ -26,24 +34,27 @@ const UsageSummaryPopup: React.FC<UsageSummaryPopupProps> = ({ children }) => {
         {children}
       </div>
 
-      {/* Minimal overlay */}
+      {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 backdrop-blur-sm bg-transparent z-40"
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
           onClick={togglePopup}
         />
       )}
 
       {/* Popup */}
       <div
-        className={`fixed top-20 right-4 z-50 w-[360px] bg-white shadow-2xl rounded-xl p-6 transition-transform duration-300 ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed z-50 bg-white shadow-2xl rounded-t-2xl md:rounded-xl p-6 transition-transform duration-300 overflow-y-auto
+          ${isOpen ? "translate-y-0 md:translate-x-0" : "translate-y-full md:translate-x-full"}
+          bottom-0 left-0 w-full md:w-[360px] md:bottom-0 md:right-4 md:top-20 max-h-[90vh]`}
       >
         {/* Header */}
-        <div className="flex justify-between items-center mb-5">
+        <div className="flex justify-between items-center mb-5 sticky top-0 bg-white pb-2">
           <h2 className="text-xl font-semibold text-gray-900">Usage Summary</h2>
-          <button onClick={togglePopup} className="text-gray-500 hover:text-gray-700 text-lg">
+          <button
+            onClick={togglePopup}
+            className="text-gray-500 hover:text-gray-700 text-lg"
+          >
             ✕
           </button>
         </div>
@@ -93,7 +104,10 @@ const UsageSummaryPopup: React.FC<UsageSummaryPopupProps> = ({ children }) => {
                   dataKey="value"
                 >
                   {data.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
                   ))}
                 </Pie>
               </PieChart>
@@ -104,7 +118,9 @@ const UsageSummaryPopup: React.FC<UsageSummaryPopupProps> = ({ children }) => {
             <span>Visitors:</span>
             <span>2771 / 180000</span>
           </div>
-          <div className="text-gray-400 text-sm text-right">Oct 26 - Nov 26</div>
+          <div className="text-gray-400 text-sm text-right">
+            Oct 26 - Nov 26
+          </div>
         </div>
       </div>
     </>

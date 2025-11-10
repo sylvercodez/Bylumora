@@ -48,7 +48,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#0a0a0a] px-4">
       <div className="w-full max-w-sm sm:max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6 text-white">Login to 10Web</h1>
+        <h1 className="text-2xl font-bold text-center mb-6 text-white">Login to Lumora</h1>
 
         {/* OAuth buttons */}
        

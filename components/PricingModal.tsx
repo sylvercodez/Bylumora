@@ -25,7 +25,7 @@ export default function PricingModal({ open, onClose }: PricingModalProps) {
         "Unlimited AI Copilot credits",
         "Unlimited image generation",
         "Free custom domain (1 year)",
-        "10Web Premium Hosting",
+        "Lumora Premium Hosting",
         "10K Website visitors",
         "10GB SSD storage",
         "Website Editor / AI Copilot",
@@ -78,7 +78,7 @@ export default function PricingModal({ open, onClose }: PricingModalProps) {
 
         <div className="p-8 border-b border-gray-200 text-center">
           <h2 className="text-2xl font-bold text-gray-900">
-            Get 7 days of <span className="text-purple-600">10Web Pro Plans</span> and a custom domain for Free
+            Get 7 days of <span className="text-purple-600">Lumora Pro Plans</span> and a custom domain for Free
           </h2>
           <p className="text-gray-500 mt-1">Choose the plan that fits your needs</p>
         </div>
@@ -124,7 +124,7 @@ export default function PricingModal({ open, onClose }: PricingModalProps) {
           <p className="font-semibold mb-2">How your free trial works:</p>
           <ul className="space-y-1">
             <li>• Website created — Your AI-powered website is ready!</li>
-            <li>• Day 0 — Choose your plan and unlock 7 days of 10Web Pro.</li>
+            <li>• Day 0 — Choose your plan and unlock 7 days of Lumora Pro.</li>
             <li>• Day 6 — You’ll get a reminder before the trial ends.</li>
             <li>• Day 7 — Your paid subscription begins unless canceled.</li>
           </ul>
