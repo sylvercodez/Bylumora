@@ -11,12 +11,15 @@ import {
   Headphones,
   Crown,
   ChevronDown,
+  ChevronRight,
   PanelRightClose,
   PanelLeftClose,
   User,
   Diamond,
   Cpu,
   X,
+  Globe,
+  FileText,
 } from "lucide-react";
 import UsageSummaryPopup from "./UsageSummaryPopup";
 import TalkToSalesModal from "./TalkToSalesModal";
@@ -77,7 +80,7 @@ function PricingModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-lg flex items-center justify-center p-2 sm:p-4">
-      <div className="w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] rounded-2xl shadow-2xl relative overflow-hidden bg-gray-900 flex flex-col">
+      <div className="w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] rounded-2xl shadow-2xl relative overflow-hidden bg-[#1a1a1a] flex flex-col">
         <button
           onClick={onClose}
           className="absolute top-2 sm:top-4 right-2 sm:right-4 p-1.5 sm:p-2 bg-white hover:bg-gray-100 rounded-full z-10 shadow-lg transition-colors"
@@ -85,7 +88,7 @@ function PricingModal({
           <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
         </button>
 
-        <div className="p-4 sm:p-6 md:p-8 border-b border-gray-700 text-center bg-gray-900 shrink-0">
+        <div className="p-4 sm:p-6 md:p-8 border-b border-gray-800 text-center shrink-0">
           <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight">
             Get 7 days of{" "}
             <span className="text-yellow-500">Lumora Pro Plans</span> and a
@@ -101,7 +104,7 @@ function PricingModal({
             {plans.map((plan, i) => (
               <div
                 key={i}
-                className={`border rounded-xl p-4 sm:p-5 md:p-6 flex flex-col hover:shadow-lg transition-all duration-200 bg-gray-800 ${
+                className={`border rounded-xl p-4 sm:p-5 md:p-6 flex flex-col hover:shadow-lg transition-all duration-200 bg-[#2a2a2a] ${
                   plan.best ? "border-yellow-500 ring-2 ring-yellow-500/20" : "border-gray-700"
                 }`}
               >
@@ -171,6 +174,8 @@ export default function Sidebar() {
   const { session, firebaseUser, loading } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isWorkspaceOpen, setIsWorkspaceOpen] = useState(false);
+  const [isWebsitesOpen, setIsWebsitesOpen] = useState(false);
+  const [isResourcesOpen, setIsResourcesOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isPricingOpen, setIsPricingOpen] = useState(false);
   const workspaceRef = useRef<HTMLDivElement | null>(null);
@@ -206,20 +211,20 @@ export default function Sidebar() {
 
   if (loading)
     return (
-      <div className="flex items-center justify-center w-64 h-screen bg-white border-r border-gray-200">
-        <p className="text-white-900">Loading...</p>
+      <div className="flex items-center justify-center w-64 h-screen bg-[#1a1a1a] border-r border-gray-800">
+        <p className="text-white">Loading...</p>
       </div>
     );
 
   return (
     <>
       <aside
-        className={`flex flex-col border-r border-gray-200 transition-all duration-300 ease-in-out ${
+        className={`flex flex-col bg-[#1a1a1a] border-r border-gray-800 transition-all duration-300 ease-in-out h-screen ${
           isSidebarOpen ? "w-64" : "w-20"
         }`}
       >
         {/* Logo + Toggle */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+        <div className="flex items-center justify-between p-4 border-b border-gray-800">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-pink-500 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">10</span>
@@ -228,152 +233,214 @@ export default function Sidebar() {
           </div>
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-1 rounded hover:bg-gray-100"
+            className="p-1 rounded hover:bg-[#2a2a2a]"
           >
             {isSidebarOpen ? (
-              <PanelRightClose className="w-5 h-5 text-white" />
+              <PanelRightClose className="w-5 h-5 text-gray-400" />
             ) : (
-              <PanelLeftClose className="w-5 h-5 text-white" />
+              <PanelLeftClose className="w-5 h-5 text-gray-400" />
             )}
           </button>
         </div>
 
-        {/* Workspace Dropdown */}
-        <div ref={workspaceRef} className="relative p-4 border-b border-gray-200">
-          <button
-            onClick={() => setIsWorkspaceOpen(true)}
-            className="w-full flex items-center rounded-full border border-yellow-500 gap-3 bg-yellow-500/10 backdrop-blur-md hover:bg-yellow-500/20 border-white p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(255,215,0,0.4)]"
-          >
-            <div className="w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center text-white font-semibold flex-shrink-0">
-              {userInitial}
-            </div>
-            {isSidebarOpen && (
-              <>
-                <div className="flex-1 text-left min-w-0">
-                  <p className="font-medium text-sm truncate text-white">{userName}’s workspace</p>
-                  <p className="text-xs text-white">Role: owner</p>
-                </div>
-                <ChevronDown
-                  className={`w-4 h-4 text-white flex-shrink-0 transition-transform  ${
-                    isWorkspaceOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </>
-            )}
-          </button>
-
-          {/* Desktop Dropdown */}
-          {!isMobile && isWorkspaceOpen && isSidebarOpen && (
-            <div className="absolute top-0 left-full ml-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-              <div className="p-3 border-b border-gray-100">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center text-white font-semibold flex-shrink-0">
-                    {userInitial}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="font-medium text-sm truncate">{userName}’s workspace</p>
-                    <p className="text-xs text-white">Role: owner</p>
-                  </div>
-                </div>
-                <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-yellow-600 hover:bg-yellow-50 rounded-md">
-                  <Diamond className="w-4 h-4" />
-                  Upgrade plan
-                </button>
-              </div>
-              <div className="p-2">
-                <button onClick={goToSubscription} className="w-full text-left px-3 py-2 text-sm hover:bg-yellow-50 rounded-md">
-                  Subscription & billing
-                </button>
-                <button className="w-full text-left px-3 py-2 text-sm hover:bg-yellow-50 rounded-md">
-                  Workspace settings
-                </button>
-                <button className="w-full text-left px-3 py-2 text-sm hover:bg-yellow-50 rounded-md">
-                  Activity log
-                </button>
-                <button className="w-full text-left px-3 py-2 text-sm hover:bg-yellow-50 rounded-md">
-                  White label
-                </button>
-              </div>
-              <div className="p-3 border-t border-gray-100">
-                <p className="text-xs text-white mb-2">Account</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 min-w-0 flex-1">
-                    <User className="w-4 h-4 text-white-400 flex-shrink-0" />
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium truncate">{userName}</p>
-                      <p className="text-xs text-white truncate">{userEmail}</p>
-                    </div>
-                  </div>
-                  <button className="text-sm text-yellow-600 hover:text-yellow-700 flex-shrink-0 ml-2">
-                    Manage
-                  </button>
-                </div>
-              </div>
-              <div className="p-2 border-t border-gray-100">
-                <button
-                  onClick={() => signOut({ callbackUrl: "/login" })}
-                  className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md"
-                >
-                  Sign out
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Navigation */}
+        {/* Navigation - Scrollable */}
         <nav className="flex-1 p-4 overflow-y-auto">
-          {isSidebarOpen && (
+          {isSidebarOpen ? (
             <>
-              <p className="text-xs font-semibold text-white uppercase tracking-wider mb-2">
-                Websites
-              </p>
+              {/* Websites Dropdown */}
+              <div className="mb-3">
+                <button
+                  onClick={() => setIsWebsitesOpen(!isWebsitesOpen)}
+                  className="w-full flex items-center justify-between px-3 py-2.5 hover:bg-[#2a2a2a] rounded-lg text-gray-300 hover:text-white text-sm font-medium transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <Globe className="w-5 h-5 flex-shrink-0" />
+                    <span>Websites</span>
+                  </div>
+                  <ChevronRight
+                    className={`w-4 h-4 transition-transform ${
+                      isWebsitesOpen ? "rotate-90" : ""
+                    }`}
+                  />
+                </button>
+                {isWebsitesOpen && (
+                  <div className="mt-1 ml-4 pl-4 border-l border-gray-800">
+                    <button
+                      onClick={() => router.push("/website")}
+                      className="w-full flex items-center gap-3 px-3 py-2 hover:bg-[#2a2a2a] hover:text-white rounded-lg text-sm text-gray-400 transition-colors"
+                    >
+                      <Cpu className="w-4 h-4 flex-shrink-0" />
+                      <span>All Websites</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Resources Dropdown */}
+              <div className="mb-3">
+                <button
+                  onClick={() => setIsResourcesOpen(!isResourcesOpen)}
+                  className="w-full flex items-center justify-between px-3 py-2.5 hover:bg-[#2a2a2a] rounded-lg text-gray-300 hover:text-white text-sm font-medium transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <FileText className="w-5 h-5 flex-shrink-0" />
+                    <span>Resources</span>
+                  </div>
+                  <ChevronRight
+                    className={`w-4 h-4 transition-transform ${
+                      isResourcesOpen ? "rotate-90" : ""
+                    }`}
+                  />
+                </button>
+                {isResourcesOpen && (
+                  <div className="mt-1 ml-4 pl-4 border-l border-gray-800 space-y-0.5">
+                    <UsageSummaryPopup>
+                      <button className="w-full flex items-center gap-3 px-3 py-2 hover:bg-[#2a2a2a] hover:text-white rounded-lg text-sm text-gray-400 transition-colors">
+                        <Book className="w-4 h-4 flex-shrink-0" />
+                        <span>Usage Summary</span>
+                      </button>
+                    </UsageSummaryPopup>
+                    <button className="w-full flex items-center gap-3 px-3 py-2 hover:bg-[#2a2a2a] hover:text-white rounded-lg text-sm text-gray-400 transition-colors">
+                      <Book className="w-4 h-4 flex-shrink-0" />
+                      <span>Knowledge Base</span>
+                    </button>
+                    <button className="w-full flex items-center gap-3 px-3 py-2 hover:bg-[#2a2a2a] hover:text-white rounded-lg text-sm text-gray-400 transition-colors">
+                      <Info className="w-4 h-4 flex-shrink-0" />
+                      <span>What's New</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="space-y-2">
               <button
                 onClick={() => router.push("/website")}
-                className="w-full flex text-white items-center gap-3 px-3 py-2 hover:bg-yellow-500 rounded-lg text-sm transition-colors"
+                className="w-full flex items-center justify-center p-3 hover:bg-[#2a2a2a] rounded-lg transition-colors"
+                title="Websites"
               >
-                <Cpu className="w-5 h-5 text-white flex-shrink-0" />
-                <span>All Websites</span>
+                <Globe className="w-5 h-5 text-gray-400" />
               </button>
-
-              <p className="text-xs font-semibold text-white uppercase tracking-wider my-2 ">
-                Resources
-              </p>
-              <UsageSummaryPopup>
-                <button className="w-full flex text-white items-center gap-3 px-3 py-2 hover:bg-yellow-500 rounded-lg text-sm transition-colors">
-                  <Book className="w-5 h-5 text-white flex-shrink-0" />
-                  <span>Usage Summary</span>
-                </button>
-              </UsageSummaryPopup>
-              <button className="w-full flex text-white items-center gap-3 px-3 py-2 hover:bg-yellow-500 rounded-lg text-sm transition-colors">
-                <Book className="w-5 h-5 text-white flex-shrink-0" />
-                <span>Knowledge Base</span>
+              <button
+                className="w-full flex items-center justify-center p-3 hover:bg-[#2a2a2a] rounded-lg transition-colors"
+                title="Resources"
+              >
+                <FileText className="w-5 h-5 text-gray-400" />
               </button>
-              <button className="w-full flex text-white items-center gap-3 px-3 py-2 hover:bg-yellow-500 rounded-lg text-sm transition-colors">
-                <Info className="w-5 h-5 text-white flex-shrink-0" />
-                <span>What's New</span>
-              </button>
-            </>
+            </div>
           )}
         </nav>
 
-        {/* Footer */}
-        <div className="p-4 border-t border-gray-200 mt-auto flex flex-col gap-2">
-          <TalkToSalesModal
-            trigger={
-              <button className="w-full flex items-center justify-center gap-2 px-4 py-2 border text-white border-gray-300 rounded-lg text-sm font-medium transition-colors">
-                <Headphones className="w-4 h-4 flex-shrink-0" />
-                {isSidebarOpen && <span>Talk to sales</span>}
-              </button>
-            }
-          />
-          <button
-            onClick={() => setIsPricingOpen(true)}
-            className="flex items-center justify-center w-full py-2 rounded-lg border border-yellow-500 text-yellow-400 font-semibold bg-yellow-500/10 text-sm font-medium backdrop-blur-md hover:bg-yellow-500/20 hover:text-yellow-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(255,215,0,0.4)]"
-          >
-            <Crown className="w-4 h-4 flex-shrink-0 mr-4" />
-            {isSidebarOpen && <span className="text-sm font-medium ">Get Lumora Pro for 7 days</span>}
-          </button>
+        {/* Footer - User Profile & Actions */}
+        <div className="border-t border-gray-800 mt-auto">
+          {/* Talk to Sales */}
+          <div className="p-4 pb-3">
+            <TalkToSalesModal
+              trigger={
+                <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-700 hover:border-gray-600 rounded-lg text-sm font-medium text-gray-300 hover:text-white transition-colors">
+                  <Headphones className="w-4 h-4 flex-shrink-0" />
+                  {isSidebarOpen && <span>Talk to sales</span>}
+                </button>
+              }
+            />
+          </div>
+
+          {/* Get Lumora Pro */}
+          <div className="px-4 pb-3">
+            <button
+              onClick={() => setIsPricingOpen(true)}
+              className="flex items-center justify-center w-full py-2.5 rounded-lg border border-yellow-500 text-yellow-400 font-semibold bg-yellow-500/10 text-sm backdrop-blur-md hover:bg-yellow-500/20 hover:text-yellow-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(255,215,0,0.4)]"
+            >
+              <Crown className="w-4 h-4 flex-shrink-0 mr-2" />
+              {isSidebarOpen && <span>Get Lumora Pro</span>}
+            </button>
+          </div>
+
+          {/* User Profile */}
+          <div ref={workspaceRef} className="relative p-4 pt-0">
+            <button
+              onClick={() => setIsWorkspaceOpen(!isWorkspaceOpen)}
+              className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-[#2a2a2a] rounded-lg transition-colors"
+            >
+              <div className="w-9 h-9 bg-gradient-to-br from-yellow-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
+                {userInitial}
+              </div>
+              {isSidebarOpen && (
+                <>
+                  <div className="flex-1 text-left min-w-0">
+                    <p className="text-sm font-medium text-white truncate">{userName}</p>
+                    <p className="text-xs text-gray-400">Free plan</p>
+                  </div>
+                  <ChevronDown
+                    className={`w-4 h-4 text-gray-400 flex-shrink-0 transition-transform ${
+                      isWorkspaceOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </>
+              )}
+            </button>
+
+            {/* Desktop Dropdown */}
+            {!isMobile && isWorkspaceOpen && isSidebarOpen && (
+              <div className="absolute bottom-full left-0 mb-2 w-64 bg-[#2a2a2a] border border-gray-700 rounded-lg shadow-xl z-50">
+                <div className="p-3 border-b border-gray-700">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center text-white font-semibold flex-shrink-0">
+                      {userInitial}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium text-sm truncate text-white">{userName}'s workspace</p>
+                      <p className="text-xs text-gray-400">Role: owner</p>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => setIsPricingOpen(true)}
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-yellow-400 bg-yellow-500/10 hover:bg-yellow-500/20 rounded-md border border-yellow-500/30"
+                  >
+                    <Diamond className="w-4 h-4" />
+                    Upgrade plan
+                  </button>
+                </div>
+                <div className="p-2">
+                  <button onClick={goToSubscription} className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#333333] hover:text-white rounded-md">
+                    Subscription & billing
+                  </button>
+                  <button className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#333333] hover:text-white rounded-md">
+                    Workspace settings
+                  </button>
+                  <button className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#333333] hover:text-white rounded-md">
+                    Activity log
+                  </button>
+                  <button className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#333333] hover:text-white rounded-md">
+                    White label
+                  </button>
+                </div>
+                <div className="p-3 border-t border-gray-700">
+                  <p className="text-xs text-gray-500 mb-2">Account</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <User className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium truncate text-white">{userName}</p>
+                        <p className="text-xs text-gray-400 truncate">{userEmail}</p>
+                      </div>
+                    </div>
+                    <button className="text-sm text-yellow-400 hover:text-yellow-300 flex-shrink-0 ml-2">
+                      Manage
+                    </button>
+                  </div>
+                </div>
+                <div className="p-2 border-t border-gray-700">
+                  <button
+                    onClick={() => signOut({ callbackUrl: "/login" })}
+                    className="w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-md"
+                  >
+                    Sign out
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </aside>
 
@@ -383,12 +450,12 @@ export default function Sidebar() {
       {/* Mobile Workspace Modal */}
       {isMobile && isWorkspaceOpen && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-lg flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-4 overflow-y-auto relative">
+          <div className="w-full max-w-md bg-[#1a1a1a] rounded-2xl shadow-lg p-4 overflow-y-auto relative">
             <button
               onClick={() => setIsWorkspaceOpen(false)}
-              className="absolute top-3 right-3 p-2 rounded-full bg-gray-100 hover:bg-gray-200"
+              className="absolute top-3 right-3 p-2 rounded-full bg-[#2a2a2a] hover:bg-[#333333]"
             >
-              <X className="w-5 h-5 text-gray-700" />
+              <X className="w-5 h-5 text-gray-300" />
             </button>
 
             <div className="mb-4">
@@ -397,48 +464,51 @@ export default function Sidebar() {
                   {userInitial}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="font-medium text-sm truncate">{userName}’s workspace</p>
-                  <p className="text-xs text-gray-500">Role: owner</p>
+                  <p className="font-medium text-sm truncate text-white">{userName}'s workspace</p>
+                  <p className="text-xs text-gray-400">Role: owner</p>
                 </div>
               </div>
-              <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-yellow-600 hover:bg-yellow-50 rounded-md">
+              <button 
+                onClick={() => setIsPricingOpen(true)}
+                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-yellow-400 bg-yellow-500/10 hover:bg-yellow-500/20 rounded-md border border-yellow-500/30"
+              >
                 <Diamond className="w-4 h-4" />
                 Upgrade plan
               </button>
             </div>
 
             <div className="space-y-2">
-              <button onClick={goToSubscription} className="w-full text-left px-3 py-2 text-sm hover:bg-yellow-50 rounded-md">
+              <button onClick={goToSubscription} className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#2a2a2a] hover:text-white rounded-md">
                 Subscription & billing
               </button>
-              <button className="w-full text-left px-3 py-2 text-sm hover:bg-yellow-50 rounded-md">
+              <button className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#2a2a2a] hover:text-white rounded-md">
                 Workspace settings
               </button>
-              <button className="w-full text-left px-3 py-2 text-sm hover:bg-yellow-50 rounded-md">
+              <button className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#2a2a2a] hover:text-white rounded-md">
                 Activity log
               </button>
-              <button className="w-full text-left px-3 py-2 text-sm hover:bg-yellow-50 rounded-md">
+              <button className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#2a2a2a] hover:text-white rounded-md">
                 White label
               </button>
             </div>
 
-            <div className="mt-4 border-t border-gray-200 pt-2">
+            <div className="mt-4 border-t border-gray-800 pt-2">
               <p className="text-xs text-gray-500 mb-2">Account</p>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 min-w-0 flex-1">
                   <User className="w-4 h-4 text-gray-400 flex-shrink-0" />
                   <div className="min-w-0">
-                    <p className="text-sm font-medium truncate">{userName}</p>
-                    <p className="text-xs text-gray-500 truncate">{userEmail}</p>
+                    <p className="text-sm font-medium truncate text-white">{userName}</p>
+                    <p className="text-xs text-gray-400 truncate">{userEmail}</p>
                   </div>
                 </div>
-                <button className="text-sm text-yellow-600 hover:text-yellow-700 flex-shrink-0 ml-2">
+                <button className="text-sm text-yellow-400 hover:text-yellow-300 flex-shrink-0 ml-2">
                   Manage
                 </button>
               </div>
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
-                className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md mt-2"
+                className="w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-md mt-2"
               >
                 Sign out
               </button>
