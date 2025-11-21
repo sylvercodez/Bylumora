@@ -71,34 +71,41 @@ function PricingModal({
   ];
 
   return (
+    
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-lg flex items-center justify-center p-2 sm:p-4">
-      <div className="w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] rounded-2xl shadow-2xl relative overflow-hidden bg-gray-900 flex flex-col">
-        <button
-          onClick={onClose}
-          className="absolute top-2 sm:top-4 right-2 sm:right-4 p-1.5 sm:p-2 bg-white hover:bg-gray-100 rounded-full z-10 shadow-lg transition-colors"
-        >
-          <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
-        </button>
+  <div className="w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] rounded-2xl shadow-2xl relative bg-[#1a1a1a] flex flex-col">
+    <button
+      onClick={onClose}
+      className="absolute top-2 sm:top-4 right-2 sm:right-4 p-1.5 sm:p-2 bg-white hover:bg-gray-100 rounded-full z-10 shadow-lg transition-colors"
+    >
+      <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
+    </button>
 
-        {/* Header - Fixed */}
-        <div className="p-4 sm:p-6 md:p-8 border-b border-gray-700 text-center bg-gray-900 shrink-0">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight">
-            Get 7 days of{" "}
-            <span className="text-yellow-500">Lumora Pro Plans</span> and a
-            custom domain for Free
-          </h2>
-          <p className="text-gray-400 text-xs sm:text-sm mt-1 sm:mt-2">
-            Choose your plan and unlock premium features
-          </p>
-        </div>
+    {/* Sticky header */}
+    <div className="p-4 sm:p-6 md:p-8 border-b border-gray-800 text-center shrink-0 sticky top-0 bg-[#1a1a1a] z-10">
+      <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight">
+        Get 7 days of <span className="text-yellow-500">Lumora Pro Plans</span> and a custom domain for Free
+      </h2>
+      <p className="text-gray-400 text-xs sm:text-sm mt-1 sm:mt-2">
+        Choose your plan and unlock premium features
+      </p>
+    </div>
+    {/* Cancel button */}
+  <button
+    onClick={onClose}
+    className="mt-3 sm:mt-4 flex items-center gap-2 px-4 py-2 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition-colors text-sm sm:text-base"
+  >
+    <X className="w-4 h-4" />
+    Cancel
+  </button>
 
-        {/* Plans Grid - Scrollable */}
-        <div className="overflow-y-auto flex-1 p-3 sm:p-6 md:p-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 max-w-6xl mx-auto">
+    <div className="overflow-y-auto flex-1 p-3 sm:p-6 md:p-8">
+      {/* Your plan cards grid stays the same */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 max-w-6xl mx-auto">
             {plans.map((plan, i) => (
               <div
                 key={i}
-                className={`border rounded-xl p-4 sm:p-5 md:p-6 flex flex-col hover:shadow-lg transition-all duration-200 bg-gray-800 ${
+                className={`border rounded-xl p-4 sm:p-5 md:p-6 flex flex-col hover:shadow-lg transition-all duration-200 bg-[#2a2a2a] ${
                   plan.best ? "border-yellow-500 ring-2 ring-yellow-500/20" : "border-gray-700"
                 }`}
               >
@@ -132,12 +139,12 @@ function PricingModal({
               </div>
             ))}
           </div>
-        </div>
-      </div>
     </div>
+  </div>
+</div>
+
   );
 }
-
 // ==================== Custom Auth Hook ====================
 function useAuth() {
   const { data: session } = useSession();

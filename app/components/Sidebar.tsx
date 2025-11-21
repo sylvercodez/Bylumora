@@ -79,28 +79,29 @@ function PricingModal({
   ];
 
   return (
+    
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-lg flex items-center justify-center p-2 sm:p-4">
-      <div className="w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] rounded-2xl shadow-2xl relative overflow-hidden bg-[#1a1a1a] flex flex-col">
-        <button
-          onClick={onClose}
-          className="absolute top-2 sm:top-4 right-2 sm:right-4 p-1.5 sm:p-2 bg-white hover:bg-gray-100 rounded-full z-10 shadow-lg transition-colors"
-        >
-          <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
-        </button>
+  <div className="w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] rounded-2xl shadow-2xl relative bg-[#1a1a1a] flex flex-col">
+    <button
+      onClick={onClose}
+      className="absolute top-2 sm:top-4 right-2 sm:right-4 p-1.5 sm:p-2 bg-white hover:bg-gray-100 rounded-full z-10 shadow-lg transition-colors"
+    >
+      <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
+    </button>
 
-        <div className="p-4 sm:p-6 md:p-8 border-b border-gray-800 text-center shrink-0">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight">
-            Get 7 days of{" "}
-            <span className="text-yellow-500">Lumora Pro Plans</span> and a
-            custom domain for Free
-          </h2>
-          <p className="text-gray-400 text-xs sm:text-sm mt-1 sm:mt-2">
-            Choose your plan and unlock premium features
-          </p>
-        </div>
+    {/* Sticky header */}
+    <div className="p-4 sm:p-6 md:p-8 border-b border-gray-800 text-center shrink-0 sticky top-0 bg-[#1a1a1a] z-10">
+      <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight">
+        Get 7 days of <span className="text-yellow-500">Lumora Pro Plans</span> and a custom domain for Free
+      </h2>
+      <p className="text-gray-400 text-xs sm:text-sm mt-1 sm:mt-2">
+        Choose your plan and unlock premium features
+      </p>
+    </div>
 
-        <div className="overflow-y-auto flex-1 p-3 sm:p-6 md:p-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 max-w-6xl mx-auto">
+    <div className="overflow-y-auto flex-1 p-3 sm:p-6 md:p-8">
+      {/* Your plan cards grid stays the same */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 max-w-6xl mx-auto">
             {plans.map((plan, i) => (
               <div
                 key={i}
@@ -138,9 +139,10 @@ function PricingModal({
               </div>
             ))}
           </div>
-        </div>
-      </div>
     </div>
+  </div>
+</div>
+
   );
 }
 
@@ -219,36 +221,113 @@ export default function Sidebar() {
   return (
     <>
       <aside
-        className={`flex flex-col bg-[#1a1a1a] border-r border-gray-800 transition-all duration-300 ease-in-out h-screen ${
+        className={`flex flex-col bg-[#1a1a1a] border-r border-gray-800 transition-all duration-300 ease-in-out h-auto ${
           isSidebarOpen ? "w-64" : "w-20"
         }`}
       >
-        {/* Logo + Toggle */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-800">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-pink-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">10</span>
-            </div>
-            {isSidebarOpen && <span className="font-semibold text-white">Bylumora</span>}
-          </div>
+        {/* User Profile at Top */}
+        <div ref={workspaceRef} className="relative p-4 border-b border-gray-800">
           <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-1 rounded hover:bg-[#2a2a2a]"
+            onClick={() => setIsWorkspaceOpen(!isWorkspaceOpen)}
+            className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-[#2a2a2a] rounded-lg transition-colors"
           >
-            {isSidebarOpen ? (
-              <PanelRightClose className="w-5 h-5 text-gray-400" />
-            ) : (
-              <PanelLeftClose className="w-5 h-5 text-gray-400" />
+            <div className="w-9 h-9 bg-gradient-to-br from-yellow-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
+              {userInitial}
+            </div>
+            {isSidebarOpen && (
+              <>
+                <div className="flex-1 text-left min-w-0">
+                  <p className="text-sm font-medium text-white truncate">{userName}</p>
+                  <p className="text-xs text-gray-400">Free plan</p>
+                </div>
+                <ChevronDown
+                  className={`w-4 h-4 text-gray-400 flex-shrink-0 transition-transform ${
+                    isWorkspaceOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </>
             )}
+          </button>
+
+          {/* Desktop Dropdown */}
+          {!isMobile && isWorkspaceOpen && isSidebarOpen && (
+            <div className="absolute top-full left-4 mt-2 w-[calc(100%-2rem)] bg-[#2a2a2a] border border-gray-700 rounded-lg shadow-xl z-50">
+              <div className="p-3 border-b border-gray-700">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center text-white font-semibold flex-shrink-0">
+                    {userInitial}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-sm truncate text-white">{userName}'s workspace</p>
+                    <p className="text-xs text-gray-400">Role: owner</p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setIsPricingOpen(true)}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-sm text-yellow-400 bg-yellow-500/10 hover:bg-yellow-500/20 rounded-md border border-yellow-500/30"
+                >
+                  <Diamond className="w-4 h-4" />
+                  Upgrade plan
+                </button>
+              </div>
+              <div className="p-2">
+                <button onClick={goToSubscription} className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#333333] hover:text-white rounded-md">
+                  Subscription & billing
+                </button>
+                <button className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#333333] hover:text-white rounded-md">
+                  Workspace settings
+                </button>
+                <button className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#333333] hover:text-white rounded-md">
+                  Activity log
+                </button>
+                <button className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#333333] hover:text-white rounded-md">
+                  White label
+                </button>
+              </div>
+              <div className="p-3 border-t border-gray-700">
+                <p className="text-xs text-gray-500 mb-2">Account</p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 min-w-0 flex-1">
+                    <User className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium truncate text-white">{userName}</p>
+                      <p className="text-xs text-gray-400 truncate">{userEmail}</p>
+                    </div>
+                  </div>
+                  <button className="text-sm text-yellow-400 hover:text-yellow-300 flex-shrink-0 ml-2">
+                    Manage
+                  </button>
+                </div>
+              </div>
+              <div className="p-2 border-t border-gray-700">
+                <button
+                  onClick={() => signOut({ callbackUrl: "/login" })}
+                  className="w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-md"
+                >
+                  Sign out
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Get Lumora Pro - Prominent position */}
+        <div className="p-4 border-b border-gray-800">
+          <button
+            onClick={() => setIsPricingOpen(true)}
+            className="flex items-center justify-center w-full py-3 rounded-lg border border-yellow-500 text-yellow-400 font-semibold bg-yellow-500/10 text-sm backdrop-blur-md hover:bg-yellow-500/20 hover:text-yellow-300 transition-all duration-300 shadow-[0_0_15px_rgba(255,215,0,0.4)]"
+          >
+            <Crown className="w-4 h-4 flex-shrink-0 mr-2" />
+            {isSidebarOpen && <span>Upgrade to Pro</span>}
           </button>
         </div>
 
         {/* Navigation - Scrollable */}
         <nav className="flex-1 p-4 overflow-y-auto">
           {isSidebarOpen ? (
-            <>
+            <div className="space-y-1">
               {/* Websites Dropdown */}
-              <div className="mb-3">
+              <div>
                 <button
                   onClick={() => setIsWebsitesOpen(!isWebsitesOpen)}
                   className="w-full flex items-center justify-between px-3 py-2.5 hover:bg-[#2a2a2a] rounded-lg text-gray-300 hover:text-white text-sm font-medium transition-colors"
@@ -264,7 +343,7 @@ export default function Sidebar() {
                   />
                 </button>
                 {isWebsitesOpen && (
-                  <div className="mt-1 ml-4 pl-4 border-l border-gray-800">
+                  <div className="mt-1 ml-4 pl-4 border-l-2 border-gray-800">
                     <button
                       onClick={() => router.push("/website")}
                       className="w-full flex items-center gap-3 px-3 py-2 hover:bg-[#2a2a2a] hover:text-white rounded-lg text-sm text-gray-400 transition-colors"
@@ -277,7 +356,7 @@ export default function Sidebar() {
               </div>
 
               {/* Resources Dropdown */}
-              <div className="mb-3">
+              <div>
                 <button
                   onClick={() => setIsResourcesOpen(!isResourcesOpen)}
                   className="w-full flex items-center justify-between px-3 py-2.5 hover:bg-[#2a2a2a] rounded-lg text-gray-300 hover:text-white text-sm font-medium transition-colors"
@@ -293,7 +372,7 @@ export default function Sidebar() {
                   />
                 </button>
                 {isResourcesOpen && (
-                  <div className="mt-1 ml-4 pl-4 border-l border-gray-800 space-y-0.5">
+                  <div className="mt-1 ml-4 pl-4 border-l-2 border-gray-800 space-y-0.5">
                     <UsageSummaryPopup>
                       <button className="w-full flex items-center gap-3 px-3 py-2 hover:bg-[#2a2a2a] hover:text-white rounded-lg text-sm text-gray-400 transition-colors">
                         <Book className="w-4 h-4 flex-shrink-0" />
@@ -311,7 +390,7 @@ export default function Sidebar() {
                   </div>
                 )}
               </div>
-            </>
+            </div>
           ) : (
             <div className="space-y-2">
               <button
@@ -331,7 +410,7 @@ export default function Sidebar() {
           )}
         </nav>
 
-        {/* Footer - User Profile & Actions */}
+        {/* Footer - Logo + Toggle + Talk to Sales */}
         <div className="border-t border-gray-800 mt-auto">
           {/* Talk to Sales */}
           <div className="p-4 pb-3">
@@ -345,100 +424,28 @@ export default function Sidebar() {
             />
           </div>
 
-          {/* Get Lumora Pro */}
-          <div className="px-4 pb-3">
-            <button
-              onClick={() => setIsPricingOpen(true)}
-              className="flex items-center justify-center w-full py-2.5 rounded-lg border border-yellow-500 text-yellow-400 font-semibold bg-yellow-500/10 text-sm backdrop-blur-md hover:bg-yellow-500/20 hover:text-yellow-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(255,215,0,0.4)]"
-            >
-              <Crown className="w-4 h-4 flex-shrink-0 mr-2" />
-              {isSidebarOpen && <span>Get Lumora Pro</span>}
-            </button>
-          </div>
-
-          {/* User Profile */}
-          <div ref={workspaceRef} className="relative p-4 pt-0">
-            <button
-              onClick={() => setIsWorkspaceOpen(!isWorkspaceOpen)}
-              className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-[#2a2a2a] rounded-lg transition-colors"
-            >
-              <div className="w-9 h-9 bg-gradient-to-br from-yellow-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
-                {userInitial}
-              </div>
-              {isSidebarOpen && (
-                <>
-                  <div className="flex-1 text-left min-w-0">
-                    <p className="text-sm font-medium text-white truncate">{userName}</p>
-                    <p className="text-xs text-gray-400">Free plan</p>
-                  </div>
-                  <ChevronDown
-                    className={`w-4 h-4 text-gray-400 flex-shrink-0 transition-transform ${
-                      isWorkspaceOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </>
-              )}
-            </button>
-
-            {/* Desktop Dropdown */}
-            {!isMobile && isWorkspaceOpen && isSidebarOpen && (
-              <div className="absolute bottom-full left-0 mb-2 w-64 bg-[#2a2a2a] border border-gray-700 rounded-lg shadow-xl z-50">
-                <div className="p-3 border-b border-gray-700">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center text-white font-semibold flex-shrink-0">
-                      {userInitial}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="font-medium text-sm truncate text-white">{userName}'s workspace</p>
-                      <p className="text-xs text-gray-400">Role: owner</p>
-                    </div>
-                  </div>
-                  <button 
-                    onClick={() => setIsPricingOpen(true)}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-yellow-400 bg-yellow-500/10 hover:bg-yellow-500/20 rounded-md border border-yellow-500/30"
-                  >
-                    <Diamond className="w-4 h-4" />
-                    Upgrade plan
-                  </button>
+          {/* Logo + Toggle */}
+          <div className="flex items-center justify-between p-4 pt-0">
+            {isSidebarOpen ? (
+              <>
+                <div className="flex items-center gap-2">
+                  
+                  <span className="font-semibold text-white">Bylumora</span>
                 </div>
-                <div className="p-2">
-                  <button onClick={goToSubscription} className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#333333] hover:text-white rounded-md">
-                    Subscription & billing
-                  </button>
-                  <button className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#333333] hover:text-white rounded-md">
-                    Workspace settings
-                  </button>
-                  <button className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#333333] hover:text-white rounded-md">
-                    Activity log
-                  </button>
-                  <button className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-[#333333] hover:text-white rounded-md">
-                    White label
-                  </button>
-                </div>
-                <div className="p-3 border-t border-gray-700">
-                  <p className="text-xs text-gray-500 mb-2">Account</p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 min-w-0 flex-1">
-                      <User className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                      <div className="min-w-0">
-                        <p className="text-sm font-medium truncate text-white">{userName}</p>
-                        <p className="text-xs text-gray-400 truncate">{userEmail}</p>
-                      </div>
-                    </div>
-                    <button className="text-sm text-yellow-400 hover:text-yellow-300 flex-shrink-0 ml-2">
-                      Manage
-                    </button>
-                  </div>
-                </div>
-                <div className="p-2 border-t border-gray-700">
-                  <button
-                    onClick={() => signOut({ callbackUrl: "/login" })}
-                    className="w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-md"
-                  >
-                    Sign out
-                  </button>
-                </div>
-              </div>
+                <button
+                  onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                  className="p-1.5 rounded hover:bg-[#2a2a2a] transition-colors"
+                >
+                  <PanelRightClose className="w-5 h-5 text-gray-400" />
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="w-full flex justify-center p-2 rounded hover:bg-[#2a2a2a] transition-colors"
+              >
+                <PanelLeftClose className="w-5 h-5 text-gray-400" />
+              </button>
             )}
           </div>
         </div>
